@@ -8,18 +8,18 @@
         https://www.youtube.com/watch?v=SxeHV1kt7iU&feature=youtu.be
 
 
-Описание игры Frogger
+## Описание игры Frogger
 Ваша реализация должна, как минимум, следовать базовым функциональным возможностям, но при желании вы можете добавить в свою игру дополнительные необязательные функциональные возможности.
 
 
-Базовая функциональность
+## Базовая функциональность
 В этой игре у вас есть игрок и враги (ошибки). Цель игрока - добраться до воды, не столкнувшись ни с одним из врагов. Игрок может двигаться влево, вправо, вверх и вниз. Враги движутся с разной скоростью по мощеной части сцены. Как только игрок сталкивается с врагом, игра сбрасывается, и игрок возвращается на стартовую клетку. Как только игрок достигает воды, игра выиграна.
 
 
 
 
 
-Дополнительный функционал
+## Дополнительный функционал
 В дополнение к основному функционалу вы можете добавить в свою игру более интересные функции. Например, вот некоторые дополнительные функции, которые вы можете добавить:
 
 Выбор игрока: разрешить пользователю выбирать изображение персонажа игрока перед началом игры. Вы можете использовать различные изображения персонажей, находящиеся в папке с изображениями (мы вернемся к этому ниже).
@@ -98,3 +98,7 @@ This repository is the starter code for _all_ Udacity students. Therefore, we mo
  This repository is deprecated; therefore, we are going to archive it. However, learners will be able to fork it to their personal Github account but cannot submit PRs to this repository. If you have any issues or suggestions to make, feel free to: 
 - Utilize the https://knowledge.udacity.com/ forum to seek help on content-specific issues. 
 - Submit a support ticket along with the link to your forked repository if (learners are) blocked for other reasons. Here are the links for the [retail consumers](https://udacity.zendesk.com/hc/en-us/requests/new) and [enterprise learners](https://udacityenterprise.zendesk.com/hc/en-us/requests/new?ticket_form_id=360000279131).
+
+
+
+https://developer.mozilla.org/ru/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection
