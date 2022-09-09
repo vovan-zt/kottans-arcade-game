@@ -1,113 +1,124 @@
-const gridSize = {
-    width: 101,
-    height: 81,
-  };
-
-  const fieldSize = {
-    width: gridSize.width*5,
-    height: gridSize.height*6,
-    top:0,
-    left:0,
-  };
-
-const startPlayerPosition = {
-x:gridSize.width*2 ,
-y:gridSize.height*5,
-};
-
-const enemySpeed = 200;
-
-
-
-
-
-const  Enemy = function(x, y, speed) {  
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-    this.sprite = 'images/enemy-bug.png';
-};
-
-Enemy.prototype.update = function(dt) {
-    this.x += this.speed*dt;
-
-    if (this.x > fieldSize.width) {
-        this.x = -gridSize.width;
-        this.speed = 100 + Math.floor(Math.random() * enemySpeed);
-    };
-
-    if (player.x + gridSize.width > this.x && player.x < this.x + gridSize.width &&
-        player.y + gridSize.height > this.y && player.y < this.y + gridSize.height) {
-        player.x = startPlayerPosition.x;
-        player.y = startPlayerPosition.y;
-    }  
-};
-
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-const  Player = function(x, y) {
-    this.x = x;
-    this.y = y;
-    this.sprite = 'images/char-boy.png';
-};
-
-Player.prototype.update = function (dt) {
- 
-};
-
-Player.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Player.prototype.handleInput = function (keyPress) {
-    if (keyPress == 'up' && this.y > fieldSize.top) {
-        this.y -= gridSize.height;
-    }
-
-    if (keyPress == 'down' && this.y < fieldSize.width-gridSize.width) {
-        this.y += gridSize.height;
-    }
-
-    if (keyPress == 'left' && this.x > fieldSize.left) {
-        this.x -= gridSize.width;
-    }
-
-    if (keyPress == 'right' && this.x < fieldSize.width-gridSize.width) {
-        this.x += gridSize.width;
-    }
-
-    if (this.y <= fieldSize.top) {
-        setTimeout(() => {
-            this.x = startPlayerPosition.x;
-            this.y = startPlayerPosition.y;
-        }, 600);
-    };
-}; 
-
-let positionEnemies= [];
-function numbeOfEnemies(amount) {
-    for(let i = 1; i<=amount; i++) {
-        if (i>3) {
-        return numbeOfEnemies(amount-i+1);
-        }
-        positionEnemies.push(i);
-    }
-    positionEnemies = positionEnemies.map(rowNumber => rowNumber * gridSize.height);
-    return positionEnemies;
+const GRID_SIZE = {
+    WIDTH: 101,
+    HEIGHT: 81,
 }
 
-const allEnemies = numbeOfEnemies(6).map(location =>location = new Enemy(location, location, enemySpeed));
+const FIELD_SIZE = {
+    WIDTH: GRID_SIZE.WIDTH * 5,
+    HEIGHT: GRID_SIZE.HEIGHT * 6,
+    TOP: 0,
+    LEFT: 0,
+}
 
-const player = new Player(startPlayerPosition.x, startPlayerPosition.y);
+const START_PLAYER_POSITION = {
+    X: GRID_SIZE.WIDTH * 2,
+    Y: GRID_SIZE.HEIGHT * 5,
+}
 
-document.addEventListener('keyup', function(e) {
+const ENEMY_SPEED = 200
+
+const LOCATION_ENEMIES = {
+    FIRST_TRACK: GRID_SIZE.HEIGHT * 1,
+    SECOND_TRACK: GRID_SIZE.HEIGHT * 2,
+    THIRD_TRACK: GRID_SIZE.HEIGHT * 3,
+}
+const Enemy = function (x = 0, y, player) {
+    this.x = x
+    this.y = y
+    this.player = player
+    this.speed = this.generateSpeed()
+    this.sprite = 'images/enemy-bug.png'
+}
+
+Enemy.prototype.checkCollision = function () {
+    if (
+        this.player.x + GRID_SIZE.WIDTH > this.x &&
+        this.player.x < this.x + GRID_SIZE.WIDTH &&
+        this.player.y + GRID_SIZE.HEIGHT > this.y &&
+        this.player.y < this.y + GRID_SIZE.HEIGHT
+    ) {
+        this.player.resetPlayerPosition()
+    }
+}
+
+Enemy.prototype.update = function (dt) {
+    this.x += this.speed * dt
+    this.resetEnemyPosition()
+    this.checkCollision()
+}
+
+Enemy.prototype.resetEnemyPosition = function () {
+    if (this.x > FIELD_SIZE.WIDTH) {
+        this.x = -GRID_SIZE.WIDTH
+        this.speed = this.generateSpeed()
+    }
+}
+
+Enemy.prototype.generateSpeed = function () {
+    return 100 + Math.floor(Math.random() * ENEMY_SPEED)
+}
+
+Enemy.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y)
+}
+const Player = function (x, y) {
+    this.x = x
+    this.y = y
+    this.sprite = 'images/char-boy.png'
+}
+
+Player.prototype.resetPlayerPosition = function () {
+    this.x = START_PLAYER_POSITION.x
+    this.y = START_PLAYER_POSITION.y
+}
+
+Player.prototype.update = function (dt) {}
+
+Player.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y)
+}
+
+Player.prototype.handleInput = function (keyPress) {
+    if (keyPress == 'up' && this.y > FIELD_SIZE.TOP) {
+        this.y -= GRID_SIZE.HEIGHT
+    }
+
+    if (keyPress == 'down' && this.y < FIELD_SIZE.WIDTH - GRID_SIZE.WIDTH) {
+        this.y += GRID_SIZE.HEIGHT
+    }
+
+    if (keyPress == 'left' && this.x > FIELD_SIZE.LEFT) {
+        this.x -= GRID_SIZE.WIDTH
+    }
+
+    if (keyPress == 'right' && this.x < FIELD_SIZE.WIDTH - GRID_SIZE.WIDTH) {
+        this.x += GRID_SIZE.WIDTH
+    }
+
+    if (this.y <= FIELD_SIZE.TOP) {
+        setTimeout(() => {
+            this.resetPlayerPosition()
+        }, 600)
+    }
+}
+
+const player = new Player(START_PLAYER_POSITION.X, START_PLAYER_POSITION.Y)
+
+const allEnemies = [
+    LOCATION_ENEMIES.FIRST_TRACK,
+    LOCATION_ENEMIES.SECOND_TRACK,
+    LOCATION_ENEMIES.THIRD_TRACK,
+    LOCATION_ENEMIES.SECOND_TRACK,
+    LOCATION_ENEMIES.FIRST_TRACK,
+].map((trackNumber) => new Enemy(this.x, trackNumber, player))
+
+document.addEventListener('keyup', function (e) {
     const allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
-    };
+        40: 'down',
+    }
 
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+    player.handleInput(allowedKeys[e.keyCode])
+})
