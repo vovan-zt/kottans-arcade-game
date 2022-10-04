@@ -68,8 +68,8 @@ const Player = function (x, y) {
 }
 
 Player.prototype.resetPlayerPosition = function () {
-    this.x = START_PLAYER_POSITION.x
-    this.y = START_PLAYER_POSITION.y
+    this.x = START_PLAYER_POSITION.X
+    this.y = START_PLAYER_POSITION.Y
 }
 
 Player.prototype.update = function (dt) {}
